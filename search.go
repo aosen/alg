@@ -21,6 +21,8 @@ type Searchable interface {
 	Compare(index int, item interface{}) int
 }
 
+//只要开发者实现上面接口，如下 就可以正常使用BinSearch
+/*
 type List []int
 
 func (l List) Len() int {
@@ -39,9 +41,11 @@ func (l List) Compare(index int, item interface{}) int {
 	}
 	return -2
 }
+*/
 
 //如果查找到返回查找到的位置，查找不到返回－1
-func BinSearch(list List, item interface{}) int {
+//时间复杂度O(log(n))
+func BinSearch(list Searchable, item interface{}) int {
 	startFlag := 0
 	stopFlag := list.Len() - 1
 	middleFlag := (startFlag + stopFlag) / 2
@@ -61,4 +65,62 @@ func BinSearch(list List, item interface{}) int {
 		middleFlag = (startFlag + stopFlag) / 2
 	}
 	return -1
+}
+
+//使用分治策略求解一个包含负数数组的最大子数组
+//只有当数组中包涵负数求解最大子数组才有意义，否则最大子数组就是其本身
+//返回最大子数组的开始和结束 及和
+//数组中一定是即包涵整数也包涵负数，否则如果都是正数，最大子数组为本身，如果都为负数，最大子数组为数组中的最大值
+//时间复杂度：
+//O(n∗log n)
+
+func DCSearchMaxSubArray(l []int, low, high int) (max_left, max_right, sum int) {
+	if high == low {
+		max_left = low
+		max_right = low
+		sum = l[low]
+		return
+	} else {
+		mid := (low + high) / 2
+		l_low, l_high, l_sum := DCSearchMaxSubArray(l, low, mid)
+		r_low, r_high, r_sum := DCSearchMaxSubArray(l, mid+1, high)
+		c_low, c_high, c_sum := dcFindMaxCrossingSubArray(l, low, mid, high)
+		if l_sum >= r_sum && l_sum >= c_sum {
+			max_left = l_low
+			max_right = l_high
+			sum = l_sum
+		} else if r_sum >= l_sum && r_sum >= c_sum {
+			max_left = r_low
+			max_right = r_high
+			sum = r_sum
+		} else {
+			max_left = c_low
+			max_right = c_high
+			sum = c_sum
+		}
+		return
+	}
+}
+
+func dcFindMaxCrossingSubArray(l []int, low, mid, high int) (max_left, max_right, sum int) {
+	left_sum := 0
+	tmp := 0
+	for i := mid; i >= low; i-- {
+		tmp += l[i]
+		if tmp > left_sum {
+			left_sum = tmp
+			max_left = i
+		}
+	}
+	right_sum := 0
+	tmp = 0
+	for i := mid + 1; i <= high; i++ {
+		tmp += l[i]
+		if tmp > right_sum {
+			right_sum = tmp
+			max_right = i
+		}
+	}
+	sum = left_sum + right_sum
+	return
 }
