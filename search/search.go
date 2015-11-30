@@ -1,4 +1,4 @@
-package alg
+package search
 
 //一系列排序算法实现
 

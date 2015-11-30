@@ -1,8 +1,4 @@
-package alg
-
-/*
-测试文件
-*/
+package search
 
 import (
 	"log"
@@ -26,21 +22,6 @@ func (l List) Compare(index int, item interface{}) int {
 		}
 	}
 	return -2
-}
-
-func Test_InsertSort(t *testing.T) {
-	vector := []int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
-	log.Println(InsertSort(vector))
-}
-
-func Test_BubbleSort(t *testing.T) {
-	vector := []int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
-	log.Println(BubbleSort(vector))
-}
-
-func Test_SelectSort(t *testing.T) {
-	vector := []int{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
-	log.Println(SelectSort(vector))
 }
 
 func Test_BinSearch(t *testing.T) {
