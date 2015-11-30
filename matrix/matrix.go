@@ -1,4 +1,4 @@
-package data
+package matrix
 
 //一些列常用数据结构实现
 

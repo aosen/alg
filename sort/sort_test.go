@@ -16,11 +16,7 @@ func (l List) Len() int {
 }
 
 func (l List) Less(i, j int) bool {
-	if l[i] < l[j] {
-		return true
-	} else {
-		return false
-	}
+	return l[i] < l[j]
 }
 
 func (l List) Swap(i, j int) {
