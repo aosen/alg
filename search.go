@@ -26,20 +26,20 @@ type Searchable interface {
 type List []int
 
 func (l List) Len() int {
-	return len(l)
+    return len(l)
 }
 
 func (l List) Compare(index int, item interface{}) int {
-	if value, ok := item.(int); ok {
-		if l[index] == value {
-			return 0
-		} else if l[index] > value {
-			return 1
-		} else {
-			return -1
-		}
-	}
-	return -2
+    if value, ok := item.(int); ok {
+        if l[index] == value {
+            return 0
+        } else if l[index] > value {
+            return 1
+        } else {
+            return -1
+        }
+    }
+    return -2
 }
 */
 
@@ -124,3 +124,36 @@ func dcFindMaxCrossingSubArray(l []int, low, mid, high int) (max_left, max_right
 	sum = left_sum + right_sum
 	return
 }
+
+/*
+暴力方法实现最大子数组
+暴力求解法
+
+该方法的思想非常简单，先找出从第1个元素开始的最大子数组，而后再从第2个元素开始找出从第2个元素开始的最大子数组，依次类推，比较得出最大的子数组。实现代码如下：
+
+/*
+常规方法,时间复杂度O（n*n）
+先从第一个元素开始向后累加，
+每次累加后与之前的和比较，保留最大值，
+再从第二个元素开始向后累加，以此类推。
+*/
+/*
+int MaxSubSum1(int *arr,int len)
+{
+    int i,j;
+    int MaxSum = 0;
+    //每次开始累加的起始位置的循环
+    for(i=0;i<len;i++)
+    {
+        int CurSum = 0;
+        //向后累加的循环
+        for(j=i;j<len;j++)
+        {
+            CurSum += arr[j];
+            if(CurSum > MaxSum)
+            MaxSum = CurSum;
+        }
+    }
+    return MaxSum;
+}
+*/
