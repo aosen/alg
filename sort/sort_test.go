@@ -38,9 +38,14 @@ func Test_SelectSort(t *testing.T) {
 	log.Println(SelectSort(vector))
 }
 
+//快速排序法
+func Test_QuickSort(t *testing.T) {
+	log.Println("快速排序法结果:")
+	vector := List{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
+	log.Println(QuickSort(vector))
+}
+
 func TestReverse(t *testing.T) {
 	v1 := List{9, 8, 7, 6, 5, 4, 3, 2, 1, 0}
-	v2 := List{9, 8, 7, 6, 5, 4, 3, 2, 1}
 	log.Println(Reverse(v1))
-	log.Println(Reverse(v2))
 }

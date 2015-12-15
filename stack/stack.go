@@ -7,16 +7,21 @@ import (
 	"sync"
 )
 
+//非阻塞栈
 type Stack struct {
 	stack []interface{}
 	len   int
-	lock  sync.Mutex
+	lock  *sync.Mutex
+	//栈大小
+	size int
 }
 
-func NewStack() *Stack {
+func NewStack(size int) *Stack {
 	s := &Stack{}
 	s.stack = make([]interface{}, 0)
 	s.len = 0
+	s.size = size
+	s.lock = new(sync.Mutex)
 	return s
 }
 
@@ -44,13 +49,18 @@ func (s *Stack) Pop() (el interface{}, err error) {
 	return
 }
 
-func (s *Stack) Push(el interface{}) {
+func (s *Stack) Push(el interface{}) (err error) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
-	prepend := make([]interface{}, 1)
-	prepend[0] = el
-	s.stack = append(prepend, s.stack...)
-	s.len++
+	if s.len >= s.size {
+		err = errors.New("the stack will overflow")
+	} else {
+		prepend := make([]interface{}, 1)
+		prepend[0] = el
+		s.stack = append(prepend, s.stack...)
+		s.len++
+	}
+	return
 }
 
 func (s *Stack) Peek() (interface{}, error) {
