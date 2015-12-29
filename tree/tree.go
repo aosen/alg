@@ -3,28 +3,6 @@ package tree
 //各类树的接口, 开发者只要实现相应接口即可获得相应树
 
 //树节点的接口, 无论实现什么树，该接口必须实现
-/*
-type Node interface {
-	//获取节点中的值
-	//两个节点比较大小
-	//小于n  -1
-	//大于n  1
-	//等于n  0
-	Compare(n Node) int
-	//获取父节点
-	GetParent() Node
-	//获取左子数
-	GetLeft() Node
-	//获取右子数
-	GetRight() Node
-	//设置节点的父节点
-	SetParent(Node)
-	//设置节点的左节点
-	SetLeft(Node)
-	//设置节点的右节点
-	SetRight(Node)
-}
-*/
 
 type Element interface {
 	//两个节点比较大小
