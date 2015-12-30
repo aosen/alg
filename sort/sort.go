@@ -12,6 +12,7 @@ type Vector interface {
 }
 
 //插入排序法
+//冒泡排序：稳定，时间复杂度 O(n^2)
 //每次处理就是将无序数列的第一个元素与有序数列的元素从后往前逐个进行比较，
 //找出插入位置，将该元素插入到有序数列的合适位置中。
 //假设在一个无序的数组中，要将该数组中的数按插入排序的方法从小到大排序。
@@ -45,9 +46,8 @@ func BubbleSort(vector Vector) Vector {
 }
 
 /*选择排序
+选择排序：不稳定，时间复杂度 O(n^2)
 时间复杂度
-排序算法复杂度对比 lgn = log2n
-排序算法复杂度对比 lgn = log2n
 选择排序的交换操作介于 0 和 (n - 1） 次之间。
 选择排序的比较操作为 n (n - 1） / 2 次之间。选择排序的赋值操作介于 0 和 3 (n - 1） 次之间。
 比较次数O(n^2），比较次数与关键字的初始状态无关，总的比较次数N=(n-1）+(n-2）+...+1=n*(n-1）/2。
@@ -71,6 +71,7 @@ func SelectSort(vector Vector) Vector {
 
 /*
 快速排序法
+快速排序：不稳定，时间复杂度 最理想 O(nlogn) 最差时间O(n^2)
 设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用数组的第一个数）作为关键数据，然后将所有比它小的数都放到它前面，所有比它大的数都放到它后面，这个过程称为一趟快速排序。值得注意的是，快速排序不是一种稳定的排序算法，也就是说，多个相同的值的相对位置也许会在算法结束时产生变动。
 一趟快速排序的算法是：
 1）设置两个变量i、j，排序开始的时候：i=0，j=N-1；
@@ -105,6 +106,46 @@ func quicksort(vector Vector, l int, r int) {
 
 	quicksort(vector, l, i-2)
 	quicksort(vector, i, r)
+}
+
+/*
+归并排序：稳定，时间复杂度 O(nlog n)
+归并排序是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。
+首先考虑下如何将将二个有序数列合并。这个非常简单，只要从比较二个数列的第一个数，谁小就先取谁，
+取了后就在对应数列中删除这个数。然后再进行比较，如果有数列为空，那直接将另一个数列的数据依次取出即可。
+可以看出合并有序数列的效率是比较高的，可以达到O(n)。
+
+解决了上面的合并有序数列问题，再来看归并排序，其的基本思路就是将数组分成二组A，B，如果这二组组内的数据都是有序的，
+那么就可以很方便的将这二组数据进行排序。如何让这二组组内数据有序了？
+可以将A，B组各自再分成二组。依次类推，当分出来的小组只有一个数据时，可以认为这个小组组内已经达到了有序，然后再合并相邻的二个小组就可以了。
+这样通过先递归的分解数列，再合并数列就完成了归并排序。
+*/
+
+func MergeSort(r []int) []int {
+	length := len(r)
+	if length <= 1 {
+		return r
+	}
+	num := length / 2
+	left := mergeSort(r[:num])
+	right := mergeSort(r[num:])
+	return Merge(left, right)
+}
+
+func Merge(left, right []int) (result []int) {
+	l, r := 0, 0
+	for l < len(left) && r < len(right) {
+		if left[l] < right[r] {
+			result = append(result, left[l])
+			l++
+		} else {
+			result = append(result, right[r])
+			r++
+		}
+	}
+	result = append(result, left[l:]...)
+	result = append(result, right[r:]...)
+	return
 }
 
 //将排序好的数据进行翻转
