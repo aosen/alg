@@ -19,74 +19,34 @@ type Node struct {
 	Right   *Node
 }
 
-//B 树
-type BTree struct {
-	Head *Node
-	Size int
+func NewNode(el Element) *Node {
+	return &Node{Element: el}
 }
 
-//构造一颗B tree
-func NewBTree(n *Node) *BTree {
-	if n == nil {
-		return &BTree{}
+//判断Btree的某个节点是否为整个树的根节点
+//如果是根节点返回true
+func IsRoot(n *Node) bool {
+	return n.Parent == nil
+}
+
+//判断Btree的某个节点是否为叶子节点
+//如果是则返回true
+func IsLeaf(n *Node) bool {
+	return n.Left == nil && n.Right == nil
+}
+
+//内部方法，删除页节点
+//如果存在则删除 并返回节点
+func deleteLeaf(n *Node) *Node {
+	//如果是根节点直接返回
+	if IsRoot(n) {
+		return n
 	} else {
-		return &BTree{
-			Head: n,
-			Size: 1,
-		}
-	}
-}
-
-//插入节点
-//节点的左节点都小于该节点 节点的右节点都大于该节点
-func (t *BTree) Insert(n *Node) {
-	//如果是一个空树，直接将Head设置为n size＋＋
-	if t.Head == nil {
-		t.Head = n
-		t.Size++
-		return
-	}
-
-	h := t.Head
-	//n 与 h进行比较 如果小于h，并且h的左节点为空，则将n填充子节点
-	//如果h的左节点不为空，则将h移动到左节点，等待下次循环
-	//右节点比较同理
-	for {
-		if n.Element.Compare(h.Element) == -1 {
-			if h.Left == nil {
-				h.Left = n
-				n.Parent = h
-				break
-			} else {
-				h = h.Left
-			}
+		if n.Parent.Left == n {
+			n.Parent.Left = nil
 		} else {
-			if h.Right == nil {
-				h.Right = n
-				n.Parent = h
-				break
-			} else {
-				h = h.Right
-			}
+			n.Parent.Right = nil
 		}
+		return n
 	}
-	t.Size++
-}
-
-func (t *BTree) Search(n *Node) *Node {
-	h := t.Head
-	//如果n小于h h等于h的左节点，如果n大于h h等于h的右节点
-	//如果n＝h 则返回查找到结果
-	//直到h == nil 则没有搜索到结果
-	for h != nil {
-		switch h.Element.Compare(n.Element) {
-		case -1:
-			h = h.Right
-		case 1:
-			h = h.Left
-		case 0:
-			return h
-		}
-	}
-	return nil
 }
