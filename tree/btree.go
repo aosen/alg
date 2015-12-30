@@ -1,5 +1,7 @@
 package tree
 
+import "container/list"
+
 //Btree的实现，开发者只需要实现Element接口，即可使用Btree
 
 //B 树
@@ -77,13 +79,40 @@ func (t *BTree) Search(el Element) *Node {
 	return nil
 }
 
+//打印树结构
+//遍历
+func (t *BTree) PrintTree(f func([]*Node)) {
+	//存储每一行的节点位置
+	store := list.New()
+	store.PushBack(t.Head)
+	l := []*Node{}
+	l = append(l, t.Head)
+	for store.Len() != 0 {
+		element := store.Back()
+		n := store.Remove(element).(*Node)
+		if n.Left != nil {
+			l = append(l, n.Left)
+			store.PushBack(n.Left)
+		}
+		if n.Right != nil {
+			l = append(l, n.Right)
+			store.PushBack(n.Right)
+		}
+	}
+	f(l)
+}
+
 //删除树中的某个节点，如果这个节点在这个树中则删除并返回true
 //如果不在这个树中则返回false
-/*
-func (t *BTree) Delete(n *Node) bool {
-	return
+func (t *BTree) Delete(el Element) bool {
+	n := t.Search(el)
+	if n != nil {
+		BTreeDelete(n)
+		return true
+	} else {
+		return false
+	}
 }
-*/
 
 //B树中寻找以某个节点为根节点的最大节点
 func BTreeMax(n *Node) *Node {
@@ -127,4 +156,25 @@ func BTreeSearch(h *Node, el Element) *Node {
 		}
 	}
 	return nil
+}
+
+//删除BTree中的某个节点
+func BTreeDelete(n *Node) Element {
+	//如果是叶子节点直接删除
+	if IsLeaf(n) {
+		DeleteLeaf(n)
+		return n.Element
+	} else {
+		//如果不是叶子节点，找一个左子数中最大的替换，如果左子树为空
+		//找右子树中最小的替换，被替换的位置递归删除
+		var replace *Node
+		if n.Left != nil {
+			replace = BTreeMax(n.Left)
+		} else {
+			replace = BTreeMin(n.Right)
+		}
+		el := n.Element
+		n.Element = BTreeDelete(replace)
+		return el
+	}
 }

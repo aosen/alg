@@ -35,18 +35,20 @@ func IsLeaf(n *Node) bool {
 	return n.Left == nil && n.Right == nil
 }
 
-//内部方法，删除页节点
-//如果存在则删除 并返回节点
-func deleteLeaf(n *Node) *Node {
-	//如果是根节点直接返回
-	if IsRoot(n) {
-		return n
-	} else {
-		if n.Parent.Left == n {
-			n.Parent.Left = nil
+//如果是页节点则删除，如果不是页节点则返回nil
+func DeleteLeaf(n *Node) *Node {
+	if IsLeaf(n) {
+		//如果是根节点直接返回
+		if IsRoot(n) {
+			return n
 		} else {
-			n.Parent.Right = nil
+			if n.Parent.Left == n {
+				n.Parent.Left = nil
+			} else {
+				n.Parent.Right = nil
+			}
+			return n
 		}
-		return n
 	}
+	return nil
 }
