@@ -1,8 +1,8 @@
 package search
 
-//一系列排序算法实现
+import "container/list"
 
-import ()
+//一系列排序算法实现
 
 //二分查找
 //二分查找又称折半查找，优点是比较次数少，查找速度快，
@@ -157,3 +157,34 @@ int MaxSubSum1(int *arr,int len)
     return MaxSum;
 }
 */
+
+/*
+求最大子数组
+用空间换时间的一个算法
+*/
+func MaxSubSum(l []int) (maxsum int) {
+	queue := list.New()
+	length := len(l)
+	for i := 0; i < length; i++ {
+		cursum := 0
+		if queue.Len() == 0 {
+			for j := i; j < length; j++ {
+				cursum += l[j]
+				if cursum > maxsum {
+					maxsum = cursum
+				}
+				queue.PushBack(cursum - l[i])
+			}
+		} else {
+			for k := 0; k < i; k++ {
+				el := queue.Back()
+				cursum := queue.Remove(el).(int)
+				if cursum > maxsum {
+					maxsum = cursum
+				}
+				queue.PushBack(cursum - l[i])
+			}
+		}
+	}
+	return
+}

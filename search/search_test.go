@@ -40,3 +40,9 @@ func Test_SearchMaxSubArray(t *testing.T) {
 	s, e, sum := DCSearchMaxSubArray(list, 0, len(list)-1)
 	log.Printf("The max subarray in the list is %d-%d-%d\n", s, e, sum)
 }
+
+func Test_MaxSubSum(t *testing.T) {
+	list := []int{1, -3, 2, 100, -9, 8, 7, 6, 5, 4}
+	maxsum := MaxSubSum(list)
+	log.Printf("the max sum is: %d\n", maxsum)
+}
