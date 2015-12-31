@@ -159,7 +159,7 @@ int MaxSubSum1(int *arr,int len)
 */
 
 /*
-时间复杂度：n*logn
+时间复杂度：n*n
 求最大子数组
 用空间换时间的一个算法
 此方法比递归方法更好理解
