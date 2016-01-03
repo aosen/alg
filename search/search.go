@@ -190,3 +190,30 @@ func MaxSubSum(l []int) (maxsum int) {
 	}
 	return
 }
+
+/*
+动态规划，时间复杂度 n
+*/
+func DPMaxSubSum(l []int) (maxsum int) {
+	length := len(l)
+	dp := []int{}
+	dp[0] = l[0]
+	maxsum = dp[0]
+	tmp := 0 //记录起始位置
+	start := 0
+	end := 0
+	for i := 1; i < length; i++ {
+		if dp[i-1] <= 0 {
+			dp[i] = l[i]
+			tmp = i
+		} else {
+			dp[i] = l[i] + dp[i-1] //向后求和
+		}
+		if dp[i] > maxsum {
+			maxsum = dp[i]
+			start = tmp
+			end = i
+		}
+	}
+	return
+}
