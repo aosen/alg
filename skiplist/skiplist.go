@@ -85,22 +85,23 @@ func (self *SkipList) Insert(el Element) {
 	level := self.randomLevel()
 	nodelist := make([]SkipListNode, level)
 	//由高层像低层插入
+	tmp := self.head[self.maxLevel-1].Right
 	for i := self.maxLevel - 1; i >= 0; i-- {
 		//如果本层中没有数据则直接插入
-		tmp := self.head[i].Right
 		for {
 			//如果已经到达末尾，则在末尾插入
 			if tmp.Right == nil {
 				nodelist[i].Right = tmp.Right
-				tmp.Right = nodelist[i]
+				tmp.Right = &nodelist[i]
 			} else {
 				if tmp.Right.Element.Compare(nodelist[i].Element) < -1 {
 					tmp = tmp.Right
 				} else {
 					nodelist[i].Right = tmp.Right
-					tmp.Right = nodelist[i]
+					tmp.Right = &nodelist[i]
 				}
 			}
 		}
+		tmp = tmp[i-1].Right
 	}
 }
