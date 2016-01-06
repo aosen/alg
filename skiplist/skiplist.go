@@ -1,4 +1,8 @@
 /*
+Author: Aosen
+Data: 2016-01-05
+Contact: QQ 316052486
+Desc:
 跳表(skip List)是一种随机化的数据结构，基于并联的链表，实现简单，插入、删除、查找的复杂度均为O(logN)。
 
 链表的一种，只不过它在链表的基础上增加了跳跃功能，正是这个跳跃的功能，使得在查找元素时，跳表能够提供O(log n)的时间复杂
@@ -85,8 +89,8 @@ func (self *SkipList) Insert(el Element) {
 	level := self.randomLevel()
 	nodelist := make([]SkipListNode, level)
 	//由高层像低层插入
-	tmp := self.head[self.maxLevel-1].Right
 	for i := self.maxLevel - 1; i >= 0; i-- {
+		tmp := self.head[i].Right
 		//如果本层中没有数据则直接插入
 		for {
 			//如果已经到达末尾，则在末尾插入
@@ -102,6 +106,5 @@ func (self *SkipList) Insert(el Element) {
 				}
 			}
 		}
-		tmp = tmp[i-1].Right
 	}
 }
